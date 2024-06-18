@@ -17,15 +17,22 @@
 from src.masks import get_mask_account, get_mask_card_number
 
 
-def mask_account_card(mask_info_card: srt) -> list:
+def mask_account_card(mask_info_card):
     """Функция общей маскировки карты и счета"""
-    masquerade = list()
 
-    for x in mask_info_card:
+    masquerade = mask_info_card.split(' ')
+
+    for account_or_card in masquerade:
+        if account_or_card.isdigit():
+            if len(account_or_card) <= 16:
+                result = masquerade[0] + get_mask_card_number(account_or_card)
+            elif len(account_or_card) > 16:
+                result = masquerade[0] + get_mask_account(account_or_card)
+            else:
+                result = "error"
 
 
-
-    return masquerade
+    return result
 
 
 
