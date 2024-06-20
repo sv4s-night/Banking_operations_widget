@@ -1,7 +1,10 @@
-def filter_by_state(my_str, state=EXECUTED):
-    """Функция фильтрации по исполнению и отказу в операции со счетами"""
+def filter_by_state(data_array, state='EXECUTED'):
+    """Функция фильтрации в операциях по счетам (исполнено и отказано)"""
+
+    return [d for d in data_array if d.get('state') == state]
 
 
+def sort_by_data(data_array, reverse=False):
+    """Функция сортировки по дате"""
 
-def sort_by_data():
-    """Функция сортировки опираций по дате со счетами"""
+    return sorted(data_array, key=lambda x: x['date'], reverse=reverse)
