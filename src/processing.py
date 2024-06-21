@@ -1,13 +1,13 @@
-from typing import Any
+from typing import List, Dict, Any
 
 
-def filter_by_state(data_array: Any[str], state: str = "EXECUTED") -> Any[str]:
+def filter_by_state(data_array: List[Dict[str, Any]], state: str = "EXECUTED") -> List[Dict[str, Any]]:
     """Функция фильтрации в операциях по счетам (исполнено и отказано)"""
 
     return [d for d in data_array if d.get("state") == state]
 
 
-def sort_by_data(data_array: Any[str], reverse: bool = False) -> Any[str]:
+def sort_by_date(data_array: List[Dict[str, Any]], ascending: bool = True) -> List[Dict[str, Any]]:
     """Функция сортировки по дате"""
 
-    return sorted(data_array, key=lambda x: x["date"], reverse=reverse)
+    return sorted(data_array, key=lambda x: x["date"], reverse=ascending)
