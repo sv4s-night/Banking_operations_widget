@@ -24,8 +24,3 @@ def fixture_test_get_data():
 @pytest.fixture
 def fixture_test_get_mask_account():
     return "12345678900987654321"
-
-
-
-
-
