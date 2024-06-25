@@ -1,14 +1,14 @@
-# from src.widget import mask_account_card, get_data
+from src.widget import mask_account_card, get_data
 from src.processing import filter_by_state, sort_by_date
 
 if __name__ == "__main__":
     # Проверочные данные урока 9.2
 
-    # user_info = str(input("Введите данные Вашей карты или счета:\n"))
-    # print(mask_account_card(user_info))
+    user_info = str(input("Введите данные Вашей карты или счета:\n"))
+    print(mask_account_card(user_info))
 
-    # operation_date = str(input("Введите дату операции:\n"))
-    # print(get_data(operation_date))
+    operation_date = str(input("Введите дату операции:\n"))
+    print(get_data(operation_date))
 
     data_list = [
         {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
