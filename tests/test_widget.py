@@ -1,4 +1,4 @@
-from src.widget import mask_account_card, get_data
+from src.widget import get_data, mask_account_card
 
 
 def test_mask_account_card(fixture_test_mask_account_card, fixture_test_get_mask_account):

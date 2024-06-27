@@ -1,4 +1,4 @@
-from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
+from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 
 if __name__ == "__main__":
     transactions = (
@@ -84,9 +84,7 @@ if __name__ == "__main__":
     usd_transactions = filter_by_currency(transactions, "USD")
     descriptions = transaction_descriptions(transactions)
 
-
     for element in range(3):
-
         print(next(usd_transactions)["id"])
         print(next(descriptions))
 

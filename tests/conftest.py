@@ -1,6 +1,18 @@
 import pytest
 
 
+# Fixtures for lesson 9.2
+@pytest.fixture
+def fixture_test_get_data():
+    return "2018-09-12T21:27:25.241689"
+
+
+@pytest.fixture
+def fixture_test_get_mask_account():
+    return "12345678900987654321"
+
+
+# Fixtures for lesson 10.1
 @pytest.fixture
 def fixture_test_processing():
     return [
@@ -16,11 +28,35 @@ def fixture_test_mask_account_card():
     return "1111222233334444"
 
 
+# Fixtures for lesson 11.1
 @pytest.fixture
-def fixture_test_get_data():
-    return "2018-09-12T21:27:25.241689"
+def fixture_test_filter_by_currency():
+    transactions = (
+        [
+            {
+                "id": 594226727,
+                "state": "CANCELED",
+                "date": "2018-09-12T21:27:25.241689",
+                "operationAmount": {
+                    "amount": "67314.70",
+                    "currency": {
+                        "name": "руб.",
+                        "code": "RUB"
+                    }
+                },
+                "description": "Перевод организации",
+                "from": "Visa Platinum 1246377376343588",
+                "to": "Счет 14211924144426031657"
+            }
+        ]
+    )
+    return transactions
 
 
 @pytest.fixture
-def fixture_test_get_mask_account():
-    return "12345678900987654321"
+def fixture_test_transaction_descriptions():
+    transactions = ([{"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689",
+                      "operationAmount": {"amount": "67314.70", "currency": {"name": "руб.", "code": "RUB"}},
+                      "description": "Перевод организации", "from": "Visa Platinum 1246377376343588",
+                      "to": "Счет 14211924144426031657"}])
+    return transactions
