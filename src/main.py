@@ -1,4 +1,5 @@
 from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
+from decorators import log
 
 if __name__ == "__main__":
     transactions = [
@@ -58,3 +59,12 @@ if __name__ == "__main__":
 
     for card_number in card_number_generator(1, 10):
         print(card_number)
+
+
+    @log(filename="mylog.txt")
+    def my_function(x, y):
+        return x / y
+
+
+    print(my_function(1, 2))
+    print(my_function(1, 0))
