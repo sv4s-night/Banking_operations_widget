@@ -1,20 +1,20 @@
-import pytest
 from functools import wraps
 
 
-def log(filename=None):
+def log(*, filename=None):
     def wrapper(func):
         @wraps(func)
         def inner(*args, **kwargs):
 
             try:
-                result = func(*args, **kwargs)
+                result = func(*args, **kwargs)                          # pytest
                 if filename:
                     with open(filename, 'a') as file:
                         file.write(f"{func.__name__} ok\n")
                 else:
                     print(f"{func.__name__} ok")
-                return result
+                return result                                           # pytest
+
             except Exception as e:
                 if filename:
                     with open(filename, 'a') as file:
