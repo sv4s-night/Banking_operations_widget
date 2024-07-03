@@ -1,4 +1,3 @@
-import pytest
 from src.decorators import log
 
 
@@ -14,27 +13,12 @@ def test_successful_execution(capsys):
     assert "my_function ok\n" in captured.out
 
 
+@log(filename="data/mylog.txt")
+def my_function_1(x, y):
+    return x / y
 
 
-#
-# @log()
-# def test_output_error(capsys):
-    with pytest.raises(TypeError):
-        my_function('a', 'b')
+def test_retry_decorator(capsys):
+    my_function_1(1, 0)
     captured = capsys.readouterr()
-    assert "my_function error: TypeError. Inputs: ('a', 'b'), {}" in captured.out
-
-
-
-#
-# def test_decorator_functionality(capsys):
-#     # Test successful execution
-#     assert my_function(1, 2) == 3
-#     captured = capsys.readouterr()
-#     assert "my_function ok" in captured.out
-#
-#     # Test exception handling
-#     with pytest.raises(TypeError):
-#         my_function('a', 'b')
-#     captured = capsys.readouterr()
-#     assert "my_function error: TypeError. Inputs: ('a', 'b'), {}" in captured.out
+    assert captured.err != "my_function_2 error: ZeroDivisionError. Inputs: (1, 0), {}"
