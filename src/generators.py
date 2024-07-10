@@ -14,5 +14,8 @@ def transaction_descriptions(transactions):
 def card_number_generator(start, end):
     """Функция генерирующая номера карт в заданном диапазоне"""
     for i in range(start, end + 1):
-        yield ('{:04d} {:04d} {:04d} {:04d}'
-               .format(i // 10 ** 12 % 10 ** 4, i // 10 ** 8 % 10 ** 4, i // 10 ** 4 % 10 ** 4, i % 10 ** 4))
+        yield (
+            "{:04d} {:04d} {:04d} {:04d}".format(
+                i // 10**12 % 10**4, i // 10**8 % 10**4, i // 10**4 % 10**4, i % 10**4
+            )
+        )
