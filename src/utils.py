@@ -31,15 +31,15 @@ def convert(to, val_from, amount):
 
     response = requests.request("GET", url, headers=headers, data=payload)
     # status_code = response.status_code
-    result = response.text
-    return result
+    result = json.loads(response.text)
+    return round(result["result"], 2)
 
 
-def proverka(transactions):
+def proverka(transaction):
     """Функция проверки явл ли Рублем"""
     tor = "RUB"
-    valute_from = transactions[0]["operationAmount"]["currency"]["code"]
-    amount = transactions[0]["operationAmount"]["amount"]
+    valute_from = transaction[0]["operationAmount"]["currency"]["code"]
+    amount = transaction[0]["operationAmount"]["amount"]
 
     if valute_from != "RUB":
         # API
@@ -51,66 +51,7 @@ def proverka(transactions):
 
 
 
-# def convert_transaction_to_rub(transaction: float) -> float:
-#     """Функция возвращает сумму транзакции в Рублях"""
-#     if transaction['currency'] == 'RUB':
-#         return transaction['amount']
-#     else:
-#         converted_amount = transaction['amount']  # Placeholder for conversion logic (обращение к функции конвертации)
-#         return converted_amount
 
-
-# def extract_transaction_amount(transaction):
-#     amount = float(transaction[0]["operationAmount"]["amount"])
-#     if transaction[0]["operationAmount"]["currency"]["code"] in ["USD", "EUR"]:
-#         # Call external API to get currency exchange rate and convert amount to rubles
-#         # Conversion logic here
-#         pass
-#     return amount
-#
-#
-#
-#
-#     valute_from = "USD"
-#     valute_to = "RUS"
-#     amount = 10
-#
-#     # url = "https://api.apilayer.com/exchangerates_data/convert?to={to}&from={from}&amount={amount}"
-#     url = f"https://api.apilayer.com/exchangerates_data/convert?to={valute_to}&from={valute_from}&amount={amount}"
-#
-#     payload = {}
-#     headers = {
-#         "apikey": "sctfncfS2MC1onu8cMTgSxeEqFY0FZBy"
-#     }
-#     response = requests.request("GET", url, headers=headers, data=payload)
-#
-#     status_code = response.status_code
-#     result = response.text
-
-
-
-# def extract_transaction_amount(transaction):
-#     amount = float(transaction[0]["operationAmount"]["amount"])
-#     valute = transaction[0]["operationAmount"]["currency"]["code"]
-#     valute_to = "RUS"
-#     if valute in ["USD", "EUR"]:
-#         # Call external API to get currency exchange rate and convert amount to rubles
-#         # Conversion logic here
-#         pass
-#     #=========================
-#     url = f"https://api.apilayer.com/exchangerates_data/convert?to={valute_to}&from={valute}&amount={amount}"
-#
-#     payload = {}
-#     headers = {
-#         "apikey": "sctfncfS2MC1onu8cMTgSxeEqFY0FZBy"
-#     }
-#     response = requests.request("GET", url, headers=headers, data=payload)
-#
-#     status_code = response.status_code
-#     result = response.text
-#     #=============================
-#
-#     return amount, status_code, result
 
 
 
@@ -119,17 +60,18 @@ transactions = read_financial_transactions(file_path)
 
 # print(transactions)
 
-#print(proverka(transactions))
+
+
+print(proverka(transactions))
 
 
 
+# проверка def convert()
+# tor = "RUB"
+# valute_from = "USD"
+# amounts = "8221.37"
+# print(convert(tor, valute_from, amounts))  # 723069.771027 результат
 
-tor = "RUB"
-valute_from = "USD"
-amounts = "8221.37"
-
-ref = convert(tor, valute_from, amounts)
-print(set(ref)['result'])
 
 """
 {
