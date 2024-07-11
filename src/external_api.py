@@ -21,7 +21,7 @@ import requests
 def convert():
     """Функция конвертации по API"""
     valute_from = "USD"
-    valute_to = "RUS"
+    valute_to = "RUB"
     amount = 10
 
     # url = "https://api.apilayer.com/exchangerates_data/convert?to={to}&from={from}&amount={amount}"
@@ -40,6 +40,33 @@ def convert():
 
 
 print(convert())
+
+
+
+""" Транзакция
+[
+{
+    "id": 441945886,
+    "state": "EXECUTED",
+    "date": "2019-08-26T10:50:58.294041",
+    "operationAmount": {
+      "amount": "31957.58",
+      "currency": {
+        "name": "руб.",
+        "code": "RUB"
+      }
+    },
+    "description": "Перевод организации",
+    "from": "Maestro 1596837868705199",
+    "to": "Счет 64686473678894779589"
+  },
+  
+  ]
+
+
+
+"""
+
 
 
 

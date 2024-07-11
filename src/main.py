@@ -1,5 +1,6 @@
 # from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 from src.decorators import log
+from src.utils import read_financial_transactions, extract_transaction_amount
 
 if __name__ == "__main__":
     # transactions = [
@@ -60,9 +61,19 @@ if __name__ == "__main__":
     # for card_number in card_number_generator(1, 10):
     #     print(card_number)
 
-    @log(filename="mylog.txt")
-    def my_function(x, y):
-        return x / y
+    # ================================================ lesson 11.2
+    #     @log(filename="mylog.txt")
+    #     def my_function(x, y):
+    #         return x / y
+    #
+    #     print(my_function(2, 2))
+    #     print(my_function(1, 0))
 
-    print(my_function(2, 2))
-    print(my_function(1, 0))
+    # ================================================ lesson 12.1
+
+    file_path = '../data/operations.json'                   # путь до json файла
+    transactions = read_financial_transactions(file_path)   # возвращает список транзакций
+    print(transactions)
+
+    itogo = extract_transaction_amount(transactions)
+    print(itogo)
