@@ -1,6 +1,7 @@
 # from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
-from src.decorators import log
-from src.utils import read_financial_transactions, extract_transaction_amount
+# from src.decorators import log
+from src.utils import read_financial_transactions, checking_currency
+
 
 if __name__ == "__main__":
     # transactions = [
@@ -71,9 +72,8 @@ if __name__ == "__main__":
 
     # ================================================ lesson 12.1
 
-    file_path = '../data/operations.json'                   # путь до json файла
-    transactions = read_financial_transactions(file_path)   # возвращает список транзакций
-    print(transactions)
 
-    itogo = extract_transaction_amount(transactions)
-    print(itogo)
+    file_path = '../data/operations.json'                        # путь до json файла
+    transactions = read_financial_transactions(file_path)
+
+    print(checking_currency(transactions, "RUB"))

@@ -1,115 +1,28 @@
 """
-2. Реализуйте функцию, которая принимает на вход транзакцию и возвращает сумму транзакции (amount) в рублях,
-тип данных — float.
-
-Если транзакция была в USD или EUR, происходит обращение к внешнему API для получения
-текущего курса валют и конвертации суммы операции в рубли.
-Для конвертации валюты воспользуйтесь Exchange Rates Data API: https://apilayer.com/exchangerates_data-api.
-
-Функцию конвертации поместите в модуль external_api.
-
-
 Используйте переменные окружения из файла .env для сокрытия чувствительных данных (токенов доступа для API).
 Создайте шаблон файла .env и разместите в репозитории на GitHub.
 
 Напишите тесты для новых функций, используйте Mock и patch.
 """
-
+import json
+import os
 import requests
+from dotenv import load_dotenv
+
+load_dotenv('../.env')
 
 
-def convert():
-    """Функция конвертации по API"""
-    valute_from = "USD"
-    valute_to = "RUB"
-    amount = 10
-
-    # url = "https://api.apilayer.com/exchangerates_data/convert?to={to}&from={from}&amount={amount}"
-    url = f"https://api.apilayer.com/exchangerates_data/convert?to={valute_to}&from={valute_from}&amount={amount}"
-
+def currency_conversion(to, val_from, amount) -> float:
+    """Обращение к API Apilayer.com для конвертации валюты"""
+    url = f"https://api.apilayer.com/exchangerates_data/convert?to={to}&from={val_from}&amount={amount}"
     payload = {}
+
+    # API_KEY - для ознакомления, перейти в .env.example
     headers = {
-        "apikey": "sctfncfS2MC1onu8cMTgSxeEqFY0FZBy"
+        "apikey": f"{os.getenv("API_KEY")}"
     }
+
     response = requests.request("GET", url, headers=headers, data=payload)
-
-    status_code = response.status_code
-    result = response.text
-    return result
-
-
-
-print(convert())
-
-
-
-""" Транзакция
-[
-{
-    "id": 441945886,
-    "state": "EXECUTED",
-    "date": "2019-08-26T10:50:58.294041",
-    "operationAmount": {
-      "amount": "31957.58",
-      "currency": {
-        "name": "руб.",
-        "code": "RUB"
-      }
-    },
-    "description": "Перевод организации",
-    "from": "Maestro 1596837868705199",
-    "to": "Счет 64686473678894779589"
-  },
-  
-  ]
-
-
-
-"""
-
-
-
-
-
-
-
-"""
-
-import requests
-
-url = "https://api.apilayer.com/exchangerates_data/convert?to={to}&from={from}&amount={amount}"
-
-payload = {}
-headers= {
-  "apikey": "sctfncfS2MC1onu8cMTgSxeEqFY0FZBy"
-}
-
-response = requests.request("GET", url, headers=headers, data = payload)
-
-status_code = response.status_code
-result = response.text
-
-
-** Слово, заключенное в фигурные скобки "{ }" в коде, означает, что это параметр, и его следует заменить собственными значениями при выполнении (также перезаписывая фигурные скобки).
-
-
-===================================================
-Ниже приведен пример ответа от конечной точки.
-
-{
-  "date": "2018-02-22",
-  "historical": "",
-  "info": {
-    "rate": 148.972231,
-    "timestamp": 1519328414
-  },
-  "query": {
-    "amount": 25,
-    "from": "GBP",
-    "to": "JPY"
-  },
-  "result": 3724.305775,
-  "success": true
-}
-
-"""
+    # status_code = response.status_code
+    result = json.loads(response.text)
+    return round(result["result"], 2)
