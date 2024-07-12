@@ -58,7 +58,7 @@
 
 ## Внешние ресурсы и работа с ними
 В программе используется сервис:
-- Exchange Rates Data API для конвертации валюты [apilayer.com](https://apilayer.com/marketplace/exchangerates_data-api) ![alt текст](https://assets.apilayer.com/logo/logo.png)
+- Exchange Rates Data API для конвертации валюты [apilayer.com](https://apilayer.com/marketplace/exchangerates_data-api)
 ```С документацией, по работе с продуктом, можно ознакомиться по вышеуказанной ссылке``` 
 
 
