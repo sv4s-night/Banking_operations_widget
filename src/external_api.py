@@ -7,11 +7,11 @@ from dotenv import load_dotenv
 load_dotenv("../.env")
 
 
-def currency_conversion(required_currency: str, currency_from: str, amount: str) -> float:
+def currency_conversion(data: dict) -> float:
     """Обращение к API Apilayer.com для конвертации валюты"""
     url = (
         f"https://api.apilayer.com/exchangerates_data/convert"
-        f"?to={required_currency}&from={currency_from}&amount={amount}"
+        f"?to={data["desired_currency"]}&from={data["currency_from"]}&amount={data["amount"]}"
     )
     payload = {}
 
