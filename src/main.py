@@ -1,6 +1,7 @@
 # from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 # from src.decorators import log
-from src.utils import checking_currency, read_financial_transactions
+from src.external_api import checking_currency
+from src.utils import read_financial_transactions
 
 if __name__ == "__main__":
     # transactions = [
@@ -73,6 +74,6 @@ if __name__ == "__main__":
     file_path = "../data/operations.json"
     transactions = read_financial_transactions(file_path)
     # print(transactions)
-    result = checking_currency(transactions, "RUB")
+    result = checking_currency(transactions)
     # print(result)
     print(round(result["result"], 2))

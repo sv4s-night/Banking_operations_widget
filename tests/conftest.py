@@ -82,9 +82,3 @@ def fixture_test_checking_currency():
         }
     ]
     return transaction
-
-
-@pytest.fixture
-def fixture_test_currency_conversion():
-    my_dict = {"desired_currency": "RUB", "currency_from": "USD", "amount": 10}
-    return my_dict
