@@ -16,7 +16,7 @@ masks_logger.addHandler(file_handler)
 
 if __name__ == "__main__":
 
-    # ================================================ lesson 9.1
+    # ================================================ lesson 9.1 ===
     number_card = get_mask_card_number("1111222233334444")
     print(f"Функция маскировки номера карты: " + number_card)
 
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     print(f"Функция маскировки номера счета: " + mask_account)
 
 
-    # ================================================ lesson 12.1
+    # ================================================ lesson 12.1 ===
     file_path = "../data/operations.json"
     transactions = read_financial_transactions(file_path)
     # print(transactions)
