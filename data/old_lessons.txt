@@ -1,14 +1,25 @@
 
 
 
-# ================================================ lesson 13.1
+    # ================================================ lesson 13.1 ===
 
-    csv_df = "../data/transactions.csv"
-    xlsx_df = "../data/transactions_excel.xlsx"
+    csv_file = "../data/transactions.csv"
+    xlsx_file = "../data/transactions_excel.xlsx"
 
-    # print(reading_financial_transactions_csv(csv_df, "json"))
-    print(reading_financial_transactions_csv(csv_df))
-    print(reading_financial_transactions_xlsx(xlsx_df))
+    df = reading_file_csv_or_xlsx(xlsx_file)
+
+    print(f"Количество строк, столбцов: {df.shape}\n")  # — выводит размер таблицы;
+    print(f"Пример содержимого файла:\n {df.head()}")   # — выводит первые несколько строк таблицы;
+    print(f"Статистическая информация:\n {df.describe()}")  # — выводит основную статистическую информацию по таблице;
+    print(f"Уникальные значения в столбце:\n{df.value_counts()}")  # — выводит количество уникальных значений в столбце;
+
+
+"""
+    print(df.map())         # — применяет функцию к каждому элементу списка;
+    print(df.sort_values()) # — сортирует данные в таблице;
+    print(df.agg())         # — агрегирует данные по нескольким столбцам;
+    print(df.groupby())     # — группирует данные по определенным критериям;
+"""
 
 # ================================================ lesson 12.1
 

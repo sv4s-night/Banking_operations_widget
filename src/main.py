@@ -1,12 +1,12 @@
 from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
-# from src.decorators import log
-# from src.external_api import checking_currency
-# from src.masks import get_mask_account, get_mask_card_number
-# from src.utils import read_financial_transactions
+from src.decorators import log
+from src.external_api import checking_currency
+from src.masks import get_mask_account, get_mask_card_number
+from src.utils import read_financial_transactions
 
 import pandas as pd
 
-from src.financial import reading_financial_transactions_csv, reading_financial_transactions_xlsx
+from src.financial import reading_file_csv_or_xlsx
 
 
 
@@ -28,13 +28,12 @@ if __name__ == "__main__":
 
     # ================================================ lesson 13.1 ===
 
-    csv_df = "../data/transactions.csv"
-    xlsx_df = "../data/transactions_excel.xlsx"
+    csv_file = "../data/transactions.csv"
+    xlsx_file = "../data/transactions_excel.xlsx"
 
-    # print(reading_financial_transactions_csv(csv_df, "json"))
-    print(reading_financial_transactions_csv(csv_df))
-    print(reading_financial_transactions_xlsx(xlsx_df))
+    df = reading_file_csv_or_xlsx(xlsx_file)
 
-
-
-
+    print(f"Количество строк, столбцов: {df.shape}\n")  # — выводит размер таблицы;
+    print(f"Пример содержимого файла:\n {df.head()}")   # — выводит первые несколько строк таблицы;
+    print(f"Статистическая информация:\n {df.describe()}")  # — выводит основную статистическую информацию по таблице;
+    print(f"Уникальные значения в столбце:\n{df.value_counts()}")  # — выводит количество уникальных значений в столбце;
