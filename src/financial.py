@@ -1,16 +1,15 @@
-# ================================================ HW lesson 13.1 ===
 import csv
 
 import pandas as pd
 
 
-def reader_file_transaction_csv(file: str) -> list[dict]:
-    """Функция считывающая cvs файл и возвращающая список словарей"""
-    with open(file, "r", encoding="utf-8") as file:
-        reader = csv.reader(file, delimiter=";")
-        header = next(reader)
+def reader_file_transaction_csv(file_path: str) -> list[dict]:
+    """Функция считывающая cvs файл и возвращающая список словарей (HW lesson 13.1)"""
+    with open(file_path, "r", encoding="utf-8") as file:
+        data_frame = csv.reader(file, delimiter=";")
+        header = next(data_frame)
         result = []
-        for row in reader:
+        for row in data_frame:
             row_dict = {
                 "id": row[header.index("id")],
                 "state": row[header.index("state")],
@@ -31,26 +30,26 @@ def reader_file_transaction_csv(file: str) -> list[dict]:
     return result
 
 
-def reader_file_transaction_excel(file: str) -> list[dict]:
-    """Функция считывающая файл в формате excel и возвращающая список словарей"""
-    df = pd.read_excel(file)
+def reader_file_transaction_excel(file_path: str) -> list[dict]:
+    """Функция считывающая файл в формате excel и возвращающая список словарей (HW lesson 13.1)"""
+    data_frame = pd.read_excel(file_path)
     result = []
-    rows_count = len(df)
+    rows_count = len(data_frame)
     for i in range(0, rows_count):
         row_dict = {
-            "id": df.at[i, "id"],
-            "state": df.at[i, "state"],
-            "date": df.at[i, "date"],
+            "id": data_frame.at[i, "id"],
+            "state": data_frame.at[i, "state"],
+            "date": data_frame.at[i, "date"],
             "operationAmount": {
-                "amount": df.at[i, "amount"],
+                "amount": data_frame.at[i, "amount"],
                 "currency": {
-                    "name": df.at[i, "currency_name"],
-                    "code": df.at[i, "currency_code"],
+                    "name": data_frame.at[i, "currency_name"],
+                    "code": data_frame.at[i, "currency_code"],
                 },
             },
-            "description": df.at[i, "description"],
-            "from": df.at[i, "from"],
-            "to": df.at[i, "to"],
+            "description": data_frame.at[i, "description"],
+            "from": data_frame.at[i, "from"],
+            "to": data_frame.at[i, "to"],
         }
         result.append(row_dict)
     return result
