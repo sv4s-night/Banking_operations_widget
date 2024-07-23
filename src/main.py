@@ -1,7 +1,10 @@
 from src.utils import read_financial_transactions
 from src.financial import reader_file_transaction_csv, reader_file_transaction_excel
 from src.search_transaction import search_transactions, count_transaction_categories
-from src.processing import filter_by_state
+from src.processing import filter_by_state, sort_by_date
+
+
+# ================================================= 1 =============================================================
 
 
 def selections_file(u_input):
@@ -27,6 +30,9 @@ def selections_file(u_input):
     return transactions
 
 
+# ================================================= 2 =============================================================
+
+
 def status_operations(transactions, answer):
     """Выбор статуса операции"""
     status = ["EXECUTED", "CANCELED", "PENDING"]
@@ -37,13 +43,36 @@ def status_operations(transactions, answer):
             result = filter_by_state(transactions, answer)
             break
         else:
-            print(f'Статус операции "{answer}" недоступен.')
-            print(f"Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING\n")
+            print(f'Статус операции "{answer}" недоступен.\n')
+            print(f"Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING")
+            answer = str(input(f"Выберете интересующие Вас операции:"
+                               f"Пользователь: ").upper())
 
     return result
 
 
+# ================================================= 3 =============================================================
 
+
+def user_choise_data(transactions):
+    answer_1 = input(f"Программа: Отсортировать операции по дате? Да/Нет\n")
+
+    if answer_1 == "да":
+        answer_2 = int(input(f"1. По убыванию\n2. Возрастанию\n"))
+        while True:
+            if answer_2 == 1:
+                result = sort_by_date(transactions, True)
+                break
+            elif answer_2 == 2:
+                result = sort_by_date(transactions, False)
+                break
+            else:
+                print(f'Статус операции "{answer_2}" недоступен.\n')
+                print(f"Вы ввели некорректный вариант, попробуйте еще.")
+                answer_2 = int(input(f"1. По убыванию\n2. Возрастанию\n"))
+        return result
+    else:
+        return transactions
 
 
 if __name__ == "__main__":
@@ -90,31 +119,19 @@ if __name__ == "__main__":
 
     """
 
-
     # ================================================= 3 =============================================================
 
 
+""" После фильтрации программа выводит следующие вопросы для уточнения выборки операций, 
+необходимых пользователю, и выводит в консоль операции, соответствующие выборке пользователя:
+Программа: Отсортировать операции по дате? Да/Нет
+Пользователь: да"""
 
-# def process_answer(answer):
-#     if answer.lower() == 'yes':
-#         return True
-#     elif answer.lower() == 'no':
-#         return False
-#     else:
-#         return None
-#
-#
-# user_input_1 = input("Отсортировать операции по дате? Да/Нет")
+    res = user_choise_data(user_status_operation)
+    print(res)
 
 
 """
-После фильтрации программа выводит следующие вопросы для уточнения выборки операций, 
-необходимых пользователю, и выводит в консоль операции, соответствующие выборке пользователя:
-
-Программа: Отсортировать операции по дате? Да/Нет
-
-Пользователь: да
-
 Программа: Отсортировать по возрастанию или по убыванию? 
 
 Пользователь: по возрастанию/по убыванию
