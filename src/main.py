@@ -1,47 +1,111 @@
+from src.utils import read_financial_transactions
 from src.financial import reader_file_transaction_csv, reader_file_transaction_excel
+from src.search_transaction import search_transactions, count_transaction_categories
 from src.processing import filter_by_state
 
 
-""" 3 Задача
-Напишите функцию main в модуле main, которая отвечает за основную 
-логику проекта и связывает функциональности между собой.
-Ожидаемое поведение программы должно быть следующим:
+def selections_file(u_input):
+    """Выбор формата файла транзакций"""
+    json_path = "../data/operations.json"
+    csv_path = "../data/transactions.csv"
+    xlsx_path = "../data/transactions_excel.xlsx"
 
-===========
-Программа приветствует пользователя:
-Программа: Привет! Добро пожаловать в программу работы 
-с банковскими транзакциями. 
-Выберите необходимый пункт меню:
-1. Получить информацию о транзакциях из JSON-файла
-2. Получить информацию о транзакциях из CSV-файла
-3. Получить информацию о транзакциях из XLSX-файла
+    transactions = []
 
-Пользователь: 1
-Программа: Для обработки выбран JSON-файл.
-===========
+    if u_input == 1:
+        print("Для обработки выбран JSON-файл\n")
+        transactions = read_financial_transactions(json_path)
+    elif u_input == 2:
+        print("Для обработки выбран CSV-файл\n")
+        transactions = reader_file_transaction_csv(csv_path)
+    elif u_input == 3:
+        print("Для обработки выбран XLSX-файл\n")
+        transactions = reader_file_transaction_excel(xlsx_path)
+    else:
+        print(f"Такой вариант не найден, попробуйте ещё раз.")
 
-После пользователь выбирает статус интересующих его операций.
-Не забудьте, что для пользователя executed, Executed и EXECUTED — это одно и то же, 
-а для программы — разное. Используйте приведение к единому регистру.
+    return transactions
 
-Программа: Введите статус, по которому необходимо выполнить фильтрацию. 
-Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING
 
-Пользователь: EXECUTED
-Программа: Операции отфильтрованы по статусу "EXECUTED"
+def status_operations(transactions, answer):
+    """Выбор статуса операции"""
+    status = ["EXECUTED", "CANCELED", "PENDING"]
 
-=============
-В случае, если пользователь ввел неверный статус, программа не должна падать в ошибку, 
-а должна возвращать пользователя к вводу корректного статуса:
+    while True:
+        if answer in status:
+            print(f'Операции отфильтрованы по статусу "{answer}"')
+            result = filter_by_state(transactions, answer)
+            break
+        else:
+            print(f'Статус операции "{answer}" недоступен.')
+            print(f"Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING\n")
 
-Пользователь: test
+    return result
 
-Программа: Статус операции "test" недоступен.
 
-Программа: Введите статус, по которому необходимо выполнить фильтрацию. 
-Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING
 
-"""
+
+
+if __name__ == "__main__":
+    # ================================================= 1 =============================================================
+    user_input_1 = int(input(f"Привет! Добро пожаловать в программу работы с банковскими транзакциями.\n"
+                             f"Выберите необходимый пункт меню:\n"
+                             f"1. Получить информацию о транзакциях из JSON-файла\n"
+                             f"2. Получить информацию о транзакциях из CSV-файла\n"
+                             f"3. Получить информацию о транзакциях из XLSX-файла\n"
+                             f"Пользователь:  "))
+
+    format_file = selections_file(user_input_1)
+    # print(selections_file(user_input_1))
+
+    # ================================================= 2 =============================================================
+    user_input_2 = str(input(f"Выберете интересующие Вас операции: "
+                             f"Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING\n"
+                             f"Пользователь: ").upper())
+
+    user_status_operation = status_operations(format_file, user_input_2)
+    # print(user_status_operation)
+
+    """ 
+    После пользователь выбирает статус интересующих его операций.
+    Не забудьте, что для пользователя executed, Executed и EXECUTED — это одно и то же, 
+    а для программы — разное. Используйте приведение к единому регистру.
+
+    Программа: Введите статус, по которому необходимо выполнить фильтрацию. 
+    Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING
+
+    Пользователь: EXECUTED
+    Программа: Операции отфильтрованы по статусу "EXECUTED"
+
+    =============
+    В случае, если пользователь ввел неверный статус, программа не должна падать в ошибку,            
+    а должна возвращать пользователя к вводу корректного статуса:
+
+    Пользователь: test
+
+    Программа: Статус операции "test" недоступен.
+
+    Программа: Введите статус, по которому необходимо выполнить фильтрацию. 
+    Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING
+
+    """
+
+
+    # ================================================= 3 =============================================================
+
+
+
+# def process_answer(answer):
+#     if answer.lower() == 'yes':
+#         return True
+#     elif answer.lower() == 'no':
+#         return False
+#     else:
+#         return None
+#
+#
+# user_input_1 = input("Отсортировать операции по дате? Да/Нет")
+
 
 """
 После фильтрации программа выводит следующие вопросы для уточнения выборки операций, 
@@ -90,17 +154,3 @@ Visa Platinum 7492 65** **** 7202 -> Счет **0034
 Программа: Не найдено ни одной транзакции, подходящей под ваши
 условия фильтрации
 """
-
-
-
-if __name__ == "__main__":
-
-    # HW lesson 13.1
-    csv_file = "../data/transactions.csv"
-    xlsx_file = "../data/transactions_excel.xlsx"
-
-    xlsx_data = reader_file_transaction_excel(xlsx_file)
-    csv_data = reader_file_transaction_csv(csv_file)
-
-    # Вывод только транзакций PENDING (рассматриваемые)
-    print(filter_by_state(csv_data, "PENDING"))
