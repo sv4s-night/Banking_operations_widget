@@ -2,6 +2,8 @@ from src.utils import read_financial_transactions
 from src.financial import reader_file_transaction_csv, reader_file_transaction_excel
 from src.search_transaction import search_transactions, count_transaction_categories
 from src.processing import filter_by_state, sort_by_date
+from external_api import checking_currency
+from generators import filter_by_currency
 
 
 # ================================================= 1 =============================================================
@@ -52,9 +54,52 @@ def status_operations(transactions, answer):
 
 
 # ================================================= 3 =============================================================
+"""Программа: Отсортировать по возрастанию или по убыванию? 
+Пользователь: по возрастанию/по убыванию"""
+
+def sorting_by_date(transactions):
+    """Сортировка по дате"""
+    answer_1 = input(f"Программа: Отсортировать операции по дате? Да/Нет\n").lower()
+
+    if answer_1 == "да":
+        answer_2 = int(input(f"1. По убыванию\n2. Возрастанию\n"))
+        while True:
+            if answer_2 == 1:
+                result = sort_by_date(transactions, True)
+                break
+            elif answer_2 == 2:
+                result = sort_by_date(transactions, False)
+                break
+            else:
+                print(f'Статус операции "{answer_2}" недоступен.\n')
+                print(f"Вы ввели некорректный вариант, попробуйте еще.")
+                answer_2 = int(input(f"1. По убыванию\n2. Возрастанию\n"))
+        return result
+    else:
+        return transactions
 
 
-def user_choise_data(transactions):
+
+# next_choice_rub = """\nВыводить только рублевые тразакции? Да/Нет"""
+#     input_user_rub = input(f"{next_choice_rub}\n").lower()
+#     while input_user_rub not in ["да", "нет"]:
+#         print("\nВвели некорректную сортировку\nПопробуйте еще раз:")
+#         input_user_rub = input(f"{next_choice_rub}\n").lower()
+#
+#     else:
+#
+#         if input_user_rub == "да":
+#             result = filter_by_currency(result, "RUB")
+
+
+
+
+
+"""Программа: Выводить только рублевые транзакции? Да/Нет
+Пользователь: да"""
+
+def sorting_by_date(transactions):
+    """Сортировка по дате"""
     answer_1 = input(f"Программа: Отсортировать операции по дате? Да/Нет\n")
 
     if answer_1 == "да":
@@ -73,6 +118,17 @@ def user_choise_data(transactions):
         return result
     else:
         return transactions
+
+
+
+
+
+"""
+Программа: Отфильтровать список транзакций по определенному слову 
+в описании? Да/Нет
+Пользователь: да/нет
+"""
+
 
 
 if __name__ == "__main__":
@@ -120,31 +176,29 @@ if __name__ == "__main__":
     """
 
     # ================================================= 3 =============================================================
+    """ После фильтрации программа выводит следующие вопросы для уточнения выборки операций, 
+    необходимых пользователю, и выводит в консоль операции, соответствующие выборке пользователя:
+    Программа: Отсортировать операции по дате? Да/Нет
+    Пользователь: да"""
+
+    first_stage = sorting_by_date(user_status_operation)
+    #print(first_stage)
+
+    second_stage = sorting_by_date(first_stage)
+    #print(second_stage)
 
 
-""" После фильтрации программа выводит следующие вопросы для уточнения выборки операций, 
-необходимых пользователю, и выводит в консоль операции, соответствующие выборке пользователя:
-Программа: Отсортировать операции по дате? Да/Нет
-Пользователь: да"""
 
-    res = user_choise_data(user_status_operation)
-    print(res)
+    """Программа: Выводить только рублевые транзакции? Да/Нет
+    Пользователь: да"""
+
+    third_stage = filter_by_currency(second_stage, "RUB")
+    print(third_stage)
+
+
 
 
 """
-Программа: Отсортировать по возрастанию или по убыванию? 
-
-Пользователь: по возрастанию/по убыванию
-
-Программа: Выводить только рублевые транзакции? Да/Нет
-
-Пользователь: да
-
-Программа: Отфильтровать список транзакций по определенному слову 
-в описании? Да/Нет
-
-Пользователь: да/нет
-
 Программа: Распечатываю итоговый список транзакций...
 
 Программа: 

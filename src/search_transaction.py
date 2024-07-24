@@ -10,6 +10,7 @@ import re
 
 
 def search_transactions(data, search_string):
+    """"""
     return [transaction for transaction in data if re.search(search_string, transaction['description'])]
 
 
