@@ -3,15 +3,36 @@ import re
 """ 1 Задача
 Напишите функцию, которая будет принимать список словарей с данными о банковских операциях и строку поиска, 
 а возвращать список словарей, у которых в описании есть данная строка. 
-
-При реализации этой функции можно использовать библиотеку re для работы с регулярными выражениями.
-Расположение новой функции в структуре проекта определите самостоятельно.
 """
 
-
 def search_transactions(data, search_string):
-    """"""
-    return [transaction for transaction in data if re.search(search_string, transaction['description'])]
+    """Поиск по описанию транзакции"""
+    #return [transaction for transaction in data if re.search(search_string, transaction['description'])]
+    pattern = rf"{search_string}"
+    result_transactions_dict = [
+        transaction
+        for transaction in transactions
+        if re.findall(pattern, transaction["description"], flags=re.IGNORECASE)
+    ]
+    return result_transactions_dict
+
+
+
+
+#
+# def sorting_transactions_by_description(transactions: List[Dict], search_string: str) -> List[Dict]:
+#     """Функция принимает список транзакций (словарей) и слово для сортировки.
+#     Возвращает список транзакций (словарей), у которых в описании есть указанное слово."""
+#     pattern = rf"{search_string}"
+#     result_transactions_dict = [
+#         transaction
+#         for transaction in transactions
+#         if re.findall(pattern, transaction["description"], flags=re.IGNORECASE)
+#     ]
+#     return result_transactions_dict
+
+
+
 
 
 
@@ -23,7 +44,6 @@ def search_transactions(data, search_string):
 
 Расположение новой функции в структуре проекта определите самостоятельно.
 """
-
 
 def count_transaction_categories(transactions, categories):
     category_count = {category: 0 for category in categories}
@@ -54,3 +74,39 @@ categories = ["Transfer from account to account", "Payment", "Withdrawal"]
 
 result = count_transaction_categories(transactions, categories)
 print(result)
+
+
+# =================================================================================================================
+
+next_choice_word = """\nОтфильтровать список транзакций по определенному слову в описании? Да/Нет"""
+input_user_word = input(f"{next_choice_word}\n").lower()
+while input_user_word not in ["да", "нет"]:
+    print("\nВвели некорректную фильтрацию\nПопробуйте еще раз:")
+    input_user_word = input(f"{next_choice_word}\n").lower()
+else:
+    if input_user_word == "да":
+        word_filter = input("Введите слово для поиска:\n")
+
+        if input_user_rub == "да":
+            list_result = [r for r in [*result]]
+            result = search_transactions([*result], word_filter)
+
+        else:
+            result = search_transactions(result, word_filter)
+
+print("Распечатываю итоговый список транзакций...\n")
+print(f"Всего банковских операций в выборке: {len(result)}")
+
+if result is []:
+    return "Не найдено ни одной транзакции, подходящей под ваши условия фильтрации"
+else:
+    for i in result:
+        data = get_data(i["date"])
+        description = i["description"]
+        from_ = get_mask_card_number(i.get("from", ""))
+        to_ = get_mask_card_number(i.get("to", ""))
+        amount = i["operationAmount"]["amount"]
+        name = i["operationAmount"]["currency"]["name"]
+
+        print(f"{data} {description}\n{from_} -> {to_}\nСумма: {amount} {name}\n")
+return "finish"
