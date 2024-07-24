@@ -7,14 +7,15 @@ import re
 
 def search_transactions(data, search_string):
     """Поиск по описанию транзакции"""
-    #return [transaction for transaction in data if re.search(search_string, transaction['description'])]
-    pattern = rf"{search_string}"
-    result_transactions_dict = [
-        transaction
-        for transaction in transactions
-        if re.findall(pattern, transaction["description"], flags=re.IGNORECASE)
-    ]
-    return result_transactions_dict
+    return [transaction for transaction in data if re.search(search_string, transaction['description'])]
+
+    # pattern = rf"{search_string}"
+    # result_transactions_dict = [
+    #     transaction
+    #     for transaction in transactions
+    #     if re.findall(pattern, transaction["description"], flags=re.IGNORECASE)
+    # ]
+    # return result_transactions_dict
 
 
 
