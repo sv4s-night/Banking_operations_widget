@@ -57,27 +57,67 @@ def status_operations(transactions, answer):
 """Программа: Отсортировать по возрастанию или по убыванию? 
 Пользователь: по возрастанию/по убыванию"""
 
+
+# origin
 def sorting_by_date(transactions):
     """Сортировка по дате"""
-    answer_1 = input(f"Программа: Отсортировать операции по дате? Да/Нет\n").lower()
+    answer_1 = input(f"Программа: Отсортировать операции по дате? Yes/No\n").lower()
 
-    if answer_1 == "да":
-        answer_2 = int(input(f"1. По убыванию\n2. Возрастанию\n"))
-        while True:
-            if answer_2 == 1:
-                result = sort_by_date(transactions, True)
-                break
-            elif answer_2 == 2:
-                result = sort_by_date(transactions, False)
-                break
-            else:
-                print(f'Статус операции "{answer_2}" недоступен.\n')
-                print(f"Вы ввели некорректный вариант, попробуйте еще.")
-                answer_2 = int(input(f"1. По убыванию\n2. Возрастанию\n"))
-        return result
+    while answer_1 not in ["yes", "no"]:
+        print(f'\nСтатус операции "{answer_1}" недоступен.')
+        print(f"Был введен некорректный вариант, попробуйте еще раз.")
+        answer_1 = input(f"Программа: Отсортировать операции по дате? Yes/No\n").lower()
+
     else:
-        return transactions
+        if answer_1 == "yes":
+            answer_2 = input(f"1. По убыванию\n2. Возрастанию\n")
+            while answer_2 not in ["1", "2"]:
+                print(f'\nСтатус операции "{answer_2}" недоступен.')
+                print(f"Был введен некорректный вариант, попробуйте еще раз.")
+                answer_2 = input(f"1. По возрастанию\n2. По убыванию\n")
 
+            else:
+                if answer_2 == "1":
+                    result = sort_by_date(transactions, True)
+                    return result
+                elif answer_2 == "2":
+                    result = sort_by_date(transactions, False)
+                    return result
+
+        elif answer_1 == "no":
+            return transactions
+
+
+
+
+# ==============================================================================================================
+"""Программа: Выводить только рублевые транзакции? Да/Нет
+Пользователь: да"""
+
+# def sorting_by_date(transactions):
+#     """Сортировка по дате"""
+#     answer_1 = input(f"Программа: Отсортировать операции по дате? Да/Нет\n")
+#
+#     if answer_1 == "да":
+#
+#         answer_2 = int(input(f"1. По убыванию\n2. Возрастанию\n"))
+#         while answer_2 not in [1, 2]:
+#             print(f'Статус операции "{answer_2}" недоступен.\n')
+#             print(f"Вы ввели некорректный вариант, попробуйте еще.")
+#             answer_2 = int(input(f"1. По убыванию\n2. Возрастанию\n"))
+#         else:
+#             if answer_2 == 1:
+#                 result = sort_by_date(transactions, True)
+#                 break
+#             elif answer_2 == 2:
+#                 result = sort_by_date(transactions, False)
+#                 break
+#     return result
+#
+#     elif answer_1 == "нет":
+#         return transactions
+#
+#     else:
 
 
 # next_choice_rub = """\nВыводить только рублевые тразакции? Да/Нет"""
@@ -92,62 +132,31 @@ def sorting_by_date(transactions):
 #             result = filter_by_currency(result, "RUB")
 
 
-
-
-
-"""Программа: Выводить только рублевые транзакции? Да/Нет
-Пользователь: да"""
-
-def sorting_by_date(transactions):
-    """Сортировка по дате"""
-    answer_1 = input(f"Программа: Отсортировать операции по дате? Да/Нет\n")
-
-    if answer_1 == "да":
-        answer_2 = int(input(f"1. По убыванию\n2. Возрастанию\n"))
-        while True:
-            if answer_2 == 1:
-                result = sort_by_date(transactions, True)
-                break
-            elif answer_2 == 2:
-                result = sort_by_date(transactions, False)
-                break
-            else:
-                print(f'Статус операции "{answer_2}" недоступен.\n')
-                print(f"Вы ввели некорректный вариант, попробуйте еще.")
-                answer_2 = int(input(f"1. По убыванию\n2. Возрастанию\n"))
-        return result
-    else:
-        return transactions
-
-
-
-
-
 """
 Программа: Отфильтровать список транзакций по определенному слову 
 в описании? Да/Нет
 Пользователь: да/нет
 """
 
-
-
 if __name__ == "__main__":
     # ================================================= 1 =============================================================
+
+    # выбор формата
     user_input_1 = int(input(f"Привет! Добро пожаловать в программу работы с банковскими транзакциями.\n"
                              f"Выберите необходимый пункт меню:\n"
                              f"1. Получить информацию о транзакциях из JSON-файла\n"
                              f"2. Получить информацию о транзакциях из CSV-файла\n"
                              f"3. Получить информацию о транзакциях из XLSX-файла\n"
                              f"Пользователь:  "))
-
     format_file = selections_file(user_input_1)
     # print(selections_file(user_input_1))
 
     # ================================================= 2 =============================================================
+
+    # выбор операции
     user_input_2 = str(input(f"Выберете интересующие Вас операции: "
                              f"Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING\n"
                              f"Пользователь: ").upper())
-
     user_status_operation = status_operations(format_file, user_input_2)
     # print(user_status_operation)
 
@@ -178,25 +187,19 @@ if __name__ == "__main__":
     # ================================================= 3 =============================================================
     """ После фильтрации программа выводит следующие вопросы для уточнения выборки операций, 
     необходимых пользователю, и выводит в консоль операции, соответствующие выборке пользователя:
+    
+    
     Программа: Отсортировать операции по дате? Да/Нет
     Пользователь: да"""
 
     first_stage = sorting_by_date(user_status_operation)
-    #print(first_stage)
-
-    second_stage = sorting_by_date(first_stage)
-    #print(second_stage)
-
-
+    print(first_stage)
 
     """Программа: Выводить только рублевые транзакции? Да/Нет
     Пользователь: да"""
 
-    third_stage = filter_by_currency(second_stage, "RUB")
-    print(third_stage)
-
-
-
+    # third_stage = filter_by_currency(second_stage, "RUB")
+    # print(third_stage)
 
 """
 Программа: Распечатываю итоговый список транзакций...
