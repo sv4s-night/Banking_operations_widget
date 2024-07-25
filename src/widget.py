@@ -1,3 +1,5 @@
+import re
+
 from src.masks import get_mask_account, get_mask_card_number
 
 
@@ -24,3 +26,12 @@ def get_date(date_str: str) -> str:
 
     parts = date_str.split("T")[0].split("-")
     return f"{parts[2]}.{parts[1]}.{parts[0]}"
+
+
+def search_transactions(transactions, search_string):
+    """Поиск по описанию в транзакции, по заданному слову"""
+    return [
+        transaction
+        for transaction in transactions
+        if re.search(search_string, transaction["description"], flags=re.IGNORECASE)
+    ]
