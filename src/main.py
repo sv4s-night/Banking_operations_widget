@@ -1,10 +1,11 @@
 from src.utils import read_financial_transactions
 from src.financial import reader_file_transaction_csv, reader_file_transaction_excel
-#from src.search_transaction import search_transactions, count_transaction_categories
+from src.search_transaction import search_transactions
 from src.processing import filter_by_state, sort_by_date
 from external_api import checking_currency
 from generators import filter_by_currency
-
+from masks import get_mask_card_number, get_mask_account
+from widget import mask_account_card, get_date
 
 # ================================================= 1 =============================================================
 
@@ -13,11 +14,11 @@ def selections_file():
     """Выбор формата файла транзакций"""
 
     user_input = int(input(f"Привет! Добро пожаловать в программу работы с банковскими транзакциями.\n"
-                             f"Выберите необходимый пункт меню:\n"
-                             f"1. Получить информацию о транзакциях из JSON-файла\n"
-                             f"2. Получить информацию о транзакциях из CSV-файла\n"
-                             f"3. Получить информацию о транзакциях из XLSX-файла\n"
-                             f"Пользователь:  "))
+                           f"Выберите необходимый пункт меню:\n"
+                           f"1. Получить информацию о транзакциях из JSON-файла\n"
+                           f"2. Получить информацию о транзакциях из CSV-файла\n"
+                           f"3. Получить информацию о транзакциях из XLSX-файла\n"
+                           f"Пользователь:  "))
 
     json_path = "../data/operations.json"
     csv_path = "../data/transactions.csv"
@@ -38,15 +39,16 @@ def selections_file():
         print(f"Такой вариант не найден, попробуйте ещё раз.")
 
     return transactions
+
+
 # ================================================= 2 =============================================================
 
 
 def status_operations(transactions):
     """Выбор статуса операции"""
     user_input = str(input(f"Выберете интересующие Вас операции: "
-                             f"Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING\n"
-                             f"Пользователь: ").upper())
-
+                           f"Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING\n"
+                           f"Пользователь: ").upper())
 
     status = ["EXECUTED", "CANCELED", "PENDING"]
 
@@ -62,6 +64,8 @@ def status_operations(transactions):
                                f"Пользователь: ").upper())
 
     return result
+
+
 # ================================================= 3 =============================================================
 
 
@@ -92,6 +96,8 @@ def sorting_by_date(transactions):
 
         elif answer_1 == "no":
             return transactions
+
+
 # ================================================= 4 =============================================================
 
 
@@ -112,64 +118,86 @@ def amount_by_rub(transactions):
         else:
             print(f'\nСтатус операции "{answer_1}" недоступен.')
             print(f"Был введен некорректный вариант, попробуйте еще раз.")
+
+
 # ================================================= 5 =============================================================
 
 
-"""
-Программа: Отфильтровать список транзакций по определенному слову в описании? Да/Нет
-"""
+def search_by_word(transactions):
+    """Отфильтровать список транзакций по определенному слову в описании"""
+    while True:
+        answer_1 = input(f"Отфильтровать список транзакций по определенному слову "
+                         f"в описании? Yes/No\nПользователь: ").lower()
 
-# def search_by_word(transactions):
-#     """Поиск по слову в транзакции"""
-#     while True:
-#         answer_1 = input(f"Отфильтровать список транзакций по определенному слову в описании? Yes/No\nПользователь: ").lower()
-#
-#         if answer_1 == "yes":
-#             word_search = input("Введите искомое слово:\nПользователь: ")
-#             result = search_transactions(transactions, word_search)
-#             return result
-#
-#         elif answer_1 == "no":
-#             return transactions
-#         else:
-#             print(f'\nСтатус операции "{answer_1}" недоступен.')
-#             print(f"Был введен некорректный вариант, попробуйте еще раз.")
+        if answer_1 == "yes":
+            word_search = input("Введите искомое слово:\nПользователь: ")
+            result = search_transactions(transactions, word_search)
+            return result
+
+        elif answer_1 == "no":
+            return transactions
+        else:
+            print(f'\nСтатус операции "{answer_1}" недоступен.')
+            print(f"Был введен некорректный вариант, попробуйте еще раз.")
+    # ================================================= 6 =============================================================
 
 
+def conclusion_results(transactions):
+    """Вывод итогового сообщения"""
+    print("Распечатываю итоговый список транзакций...\n")
+    print(f"Всего банковских операций в выборке: {len(transactions)}")
 
+    if transactions is []:
+        return "Не найдено ни одной транзакции, подходящей под ваши условия фильтрации"
+    else:
+        for item in transactions:
+            date = get_date(item["date"])
+            description = item["description"]
+            from_ = mask_account_card(item.get("from", ""))
+            to_ = mask_account_card(item.get("to", ""))
+            amount = item["operationAmount"]["amount"]
+            name = item["operationAmount"]["currency"]["name"]
 
-
-
-    # answer_1 = input(f"Отфильтровать список транзакций по определенному слову в описании? Yes/No\nПользователь: ").lower()
-    #
-    # while answer_1 not in ["yes", "no"]:
-    #     print(f"Был введен некорректный вариант, попробуйте еще раз.")
-    #     answer_1 = input(f"Отфильтровать список транзакций по определенному слову в описании? Yes/No\nПользователь: ").lower()
-    # else:
-    #     if answer_1 == "yes":
-    #         word_search = input("Введите искомое слово:\nПользователь: ")
-    #         result = search_transactions(transactions, word_search)
-    #         return result
-    #
-    #     elif answer_1 == "no":
-    #         return transactions
-
+            print(f"{date} {description}\n{from_} -> {to_}\nСумма: {amount} {name}\n")
+    return "finish"
 
 
 
 
 
 
+    """
+    counter
+    get_mask_card_number, get_mask_account      src.masks
+    
+    
+    
+    Программа: Распечатываю итоговый список транзакций...
 
+    Программа: 
+    Всего банковских операций в выборке: 4                              
 
+    08.12.2019 Открытие вклада 
+    Счет **4321
+    Сумма: 40542 руб. 
 
+    12.11.2019 Перевод с карты на карту
+    MasterCard 7771 27** **** 3727 -> Visa Platinum 1293 38** **** 9203
+    Сумма: 130 USD
 
+    18.07.2018 Перевод организации 
+    Visa Platinum 7492 65** **** 7202 -> Счет **0034
+    Сумма: 8390 руб.
 
+    03.06.2018 Перевод со счета на счет
+    Счет **2935 -> Счет **4321
+    Сумма: 8200 EUR
 
+    Если выборка оказалась пустой, программа выводит сообщение:
 
-
-
-
+    Программа: Не найдено ни одной транзакции, подходящей под ваши
+    условия фильтрации
+    """
 
 
 if __name__ == "__main__":
@@ -186,53 +214,22 @@ if __name__ == "__main__":
     # ================================================= 3 =============================================================
     # фильтрация по дате и сортировка по убыванию и возрастанию
     first_stage = sorting_by_date(user_status_operation)
-    #print(first_stage)
+    # print(first_stage)
 
     # ================================================= 3 =============================================================
     # Вывод только рублевых транзакции
     second_stage = amount_by_rub(first_stage)
-    print(second_stage)
+    # print(second_stage)
 
     # ================================================= 4 =============================================================
     # Фильтрация списка транзакций по определенному слову в описании
-    #third_stage = search_by_word(second_stage)
-    #print(third_stage)
+    third_stage = search_by_word(second_stage)
+    # print(third_stage)
+
+    # ================================================= not working ==================================================
+
+    fourth_stage = conclusion_results(third_stage)
+    print(fourth_stage)
 
 
 
-
-    # ================================================= not working =============================================================
-    # counter
-    # get_mask_card_number, get_mask_account      src.masks
-
-
-
-
-
-    """
-    Программа: Распечатываю итоговый список транзакций...
-    
-    Программа: 
-    Всего банковских операций в выборке: 4                              
-    
-    08.12.2019 Открытие вклада 
-    Счет **4321
-    Сумма: 40542 руб. 
-    
-    12.11.2019 Перевод с карты на карту
-    MasterCard 7771 27** **** 3727 -> Visa Platinum 1293 38** **** 9203
-    Сумма: 130 USD
-    
-    18.07.2018 Перевод организации 
-    Visa Platinum 7492 65** **** 7202 -> Счет **0034
-    Сумма: 8390 руб.
-    
-    03.06.2018 Перевод со счета на счет
-    Счет **2935 -> Счет **4321
-    Сумма: 8200 EUR
-    
-    Если выборка оказалась пустой, программа выводит сообщение:
-    
-    Программа: Не найдено ни одной транзакции, подходящей под ваши
-    условия фильтрации
-    """

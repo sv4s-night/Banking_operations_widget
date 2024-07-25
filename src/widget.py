@@ -19,7 +19,7 @@ def mask_account_card(mask_info_card: str) -> str:
     return result
 
 
-def get_data(date_str: str) -> str:
+def get_date(date_str: str) -> str:
     """Функция преобразования даты"""
 
     parts = date_str.split("T")[0].split("-")
