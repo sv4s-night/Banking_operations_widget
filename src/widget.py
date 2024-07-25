@@ -1,4 +1,5 @@
 import re
+from collections import Counter
 
 from src.masks import get_mask_account, get_mask_card_number
 
@@ -35,3 +36,10 @@ def search_transactions(transactions, search_string):
         for transaction in transactions
         if re.search(search_string, transaction["description"], flags=re.IGNORECASE)
     ]
+
+
+def count_transaction_categories(transactions):
+    """Функция подсчета количества операций по категориям"""
+    categories = [transaction["description"] for transaction in transactions]
+    category_counts = Counter(categories)
+    return category_counts

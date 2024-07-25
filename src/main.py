@@ -1,7 +1,7 @@
 from src.financial import reader_file_transaction_csv, reader_file_transaction_excel
 from src.processing import filter_by_state, sort_by_date
 from src.utils import read_financial_transactions
-from widget import get_date, mask_account_card, search_transactions
+from widget import count_transaction_categories, get_date, mask_account_card, search_transactions
 
 
 def selections_file():
@@ -135,6 +135,7 @@ def conclusion_results(transactions):
     """Вывод итогового сообщения"""
     print("\nПрограмма: Распечатываю итоговый список транзакций...")
     print(f"Программа: Всего банковских операций в выборке: {len(transactions)}\n")
+    print(f"Программа: {count_transaction_categories(transactions)}\n")
 
     if transactions is []:
         return "Программа: Не найдено ни одной транзакции, подходящей под ваши условия фильтрации"
